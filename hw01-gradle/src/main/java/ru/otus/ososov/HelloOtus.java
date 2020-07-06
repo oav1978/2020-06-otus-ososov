@@ -1,3 +1,5 @@
+package ru.otus.ososov;
+
 import com.google.common.base.Optional;
 import java.util.Date;
 
@@ -6,7 +8,7 @@ import java.util.Date;
  * @author Ososov
  * Created 04.07.2020
  */
-public class App {
+public class HelloOtus {
 
     public static Optional< String > getStringByTimeDiv2() {
         Optional< String > returnValue = Optional.absent();
