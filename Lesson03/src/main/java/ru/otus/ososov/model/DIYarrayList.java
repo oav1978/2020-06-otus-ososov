@@ -4,16 +4,17 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class DIYarrayList<T> implements List<T> {
+    private static final int STEP_EXPANSION = 10;
     private Object[] dataList;
-    private int capacity=0;
+    private int capacity = 0;
 
-    public DIYarrayList(){
-        dataList= new Object[0];
+    public DIYarrayList() {
+        dataList = new Object[0];
     }
 
-    public DIYarrayList(int capacity){
-        dataList= new Object[capacity];
-        this.capacity=capacity;
+    public DIYarrayList(int capacity) {
+        dataList = new Object[capacity];
+        this.capacity = capacity;
     }
 
     @Override
@@ -23,13 +24,14 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public boolean isEmpty() {
-        return size()==0;
+        return size() == 0;
     }
 
     @Override
     public boolean contains(Object o) {
-        for (Object obj:dataList){
-            if (obj.equals(o))return true;
+        for (Object obj : dataList) {
+            if (obj.equals(o))
+                return true;
         }
         return false;
     }
@@ -41,8 +43,9 @@ public class DIYarrayList<T> implements List<T> {
 
     @Override
     public Object[] toArray() {
-        Object[] res=new Object[size()];
-        for (int i=0;i<size();i++)res[i]=dataList[i];
+        Object[] res = new Object[size()];
+        for (int i = 0; i < size(); i++)
+            res[i] = dataList[i];
         return res;
     }
 
@@ -54,8 +57,10 @@ public class DIYarrayList<T> implements List<T> {
     @Override
     public boolean add(T t) {
         capacity++;
-        dataList=Arrays.copyOf(dataList,capacity);
-        dataList[capacity-1]=t;
+        if (capacity>=dataList.length) {
+            dataList = Arrays.copyOf(dataList, dataList.length+STEP_EXPANSION);
+        }
+        dataList[capacity - 1] = t;
         return true;
     }
 
@@ -142,8 +147,8 @@ public class DIYarrayList<T> implements List<T> {
     private class DIYIterator<T> implements Iterator<T> {
         int currentPosition;
 
-        public DIYIterator(){
-            currentPosition=0;
+        public DIYIterator() {
+            currentPosition = 0;
         }
 
         /**
@@ -155,7 +160,7 @@ public class DIYarrayList<T> implements List<T> {
          */
         @Override
         public boolean hasNext() {
-            return currentPosition!=size();
+            return currentPosition != size();
         }
 
         /**
@@ -166,9 +171,9 @@ public class DIYarrayList<T> implements List<T> {
          */
         @Override
         public T next() {
-            if (currentPosition>size())throw new NoSuchElementException();
+            if (currentPosition > size()) throw new NoSuchElementException();
             currentPosition++;
-            return (T) dataList[currentPosition-1];
+            return (T) dataList[currentPosition - 1];
         }
 
         /**
@@ -227,7 +232,7 @@ public class DIYarrayList<T> implements List<T> {
         }
     }
 
-    private class DIYListIterator<T> extends DIYIterator<T> implements ListIterator<T>{
+    private class DIYListIterator<T> extends DIYIterator<T> implements ListIterator<T> {
 
         /**
          * Returns {@code true} if this list iterator has more elements when
@@ -240,7 +245,7 @@ public class DIYarrayList<T> implements List<T> {
          */
         @Override
         public boolean hasPrevious() {
-            return (currentPosition>0);
+            return (currentPosition > 0);
         }
 
         /**
@@ -257,7 +262,7 @@ public class DIYarrayList<T> implements List<T> {
          */
         @Override
         public T previous() {
-            if (hasPrevious()){
+            if (hasPrevious()) {
                 currentPosition--;
                 return (T) dataList[currentPosition];
             } else throw new NoSuchElementException();
@@ -274,7 +279,7 @@ public class DIYarrayList<T> implements List<T> {
          */
         @Override
         public int nextIndex() {
-            return currentPosition+1;
+            return currentPosition + 1;
         }
 
         /**
@@ -288,7 +293,7 @@ public class DIYarrayList<T> implements List<T> {
          */
         @Override
         public int previousIndex() {
-            return currentPosition-1;
+            return currentPosition - 1;
         }
 
         /**
@@ -313,8 +318,8 @@ public class DIYarrayList<T> implements List<T> {
          */
         @Override
         public void set(T t) {
-            if (currentPosition<=size())
-            dataList[currentPosition-1]=t;
+            if (currentPosition <= size())
+                dataList[currentPosition - 1] = t;
         }
 
         /**
