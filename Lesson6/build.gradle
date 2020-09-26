@@ -1,0 +1,22 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+    id 'com.github.johnrengelman.shadow'
+}
+
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
+repositories {
+    mavenCentral()
+}
+
+shadowJar {
+    archiveBaseName.set('gradleLesson06')
+    archiveVersion.set('0.1')
+    archiveClassifier.set('')
+    manifest {
+        attributes 'Main-Class': 'ru.otus.ososov.Starter'
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
