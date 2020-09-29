@@ -1,4 +1,4 @@
-package ru.otus.ososov.testframework.service;
+package ru.otus.ososov.testframework.model;
 
 import java.lang.reflect.Method;
 
@@ -6,8 +6,8 @@ public class TestResult {
     private final Method method;
     private boolean passed;
 
-    public TestResult(Method method){
-        this.method=method;
+    public TestResult(Method method) {
+        this.method = method;
     }
 
     public Method getMethod() {
