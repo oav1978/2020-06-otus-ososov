@@ -41,13 +41,12 @@ public class TestRunner {
             TestResult testResult = new TestResult(testMethod);
             resultsList.add(testResult);
             Object obj = createObject(clazz);
-            if (obj != null) {
-                if ((executeMethods(beforeMethods, obj)) &&
-                        (executeMethod(testMethod, obj)) &&
-                        (executeMethods(afterMethods, obj))) {
-                    testResult.setPassed(true);
-                }
+            if ((executeMethods(beforeMethods, obj)) &&
+                    (executeMethod(testMethod, obj)) &&
+                    (executeMethods(afterMethods, obj))) {
+                testResult.setPassed(true);
             }
+
         }
         int passedCount = resultsList.stream().filter(value -> value.isPassed()).collect(Collectors.toList()).size();
         int failureCount = resultsList.size() - passedCount;
@@ -63,9 +62,7 @@ public class TestRunner {
             if (((doSetAccess) && (method.trySetAccessible())) || (!doSetAccess)) {
                 try {
                     method.invoke(obj);
-                    if (doSetAccess) method.setAccessible(false);
-
-                } catch (IllegalAccessException | InvocationTargetException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     return false;
                 }
@@ -82,11 +79,9 @@ public class TestRunner {
         if (((doSetAccess) && (method.trySetAccessible())) || (!doSetAccess)) {
             try {
                 method.invoke(obj);
-                if (doSetAccess) method.setAccessible(false);
                 return true;
-            } catch (IllegalAccessException | InvocationTargetException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                if (doSetAccess) method.setAccessible(false);
                 return false;
             }
         } else return false;
@@ -100,7 +95,7 @@ public class TestRunner {
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
-        return new TestFrameWorkException("Can't create object. Testing is breaking.");
+        throw new TestFrameWorkException("Can't create object. Testing is breaking.");
     }
 
     private static ArrayList<Method> getBeforeMethods(Method[] declaredMethods) {
